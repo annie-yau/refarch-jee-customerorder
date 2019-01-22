@@ -1,8 +1,9 @@
 FROM websphere-liberty:webProfile7
-
-COPY Common/server.xml /config
-COPY Common/server.env.docker /config/server.env
+COPY Common/server_no_ldap.xml /config/server.xml
+COPY Common/server_no_ldap.env /config/server.env
 COPY CustomerOrderServicesApp/target/CustomerOrderServicesApp-0.1.0-SNAPSHOT.ear /config/apps
+COPY db2lib/db2jcc4.jar /liberty/wlp/usr/shared/resources
+COPY db2lib/db2jcc_license_cu.jar /liberty/wlp/usr/shared/resources
 
 RUN /opt/ibm/wlp/bin/installUtility install  --acceptLicense \
     appSecurity-2.0 \
@@ -14,7 +15,3 @@ RUN /opt/ibm/wlp/bin/installUtility install  --acceptLicense \
     jpa-2.0 \
     jsp-2.3 \
     servlet-3.1
-
-ADD https://artifacts.alfresco.com/nexus/content/repositories/public/com/ibm/db2/jcc/db2jcc4/10.1/db2jcc4-10.1.jar /db2lib/db2jcc4.jar
-
-ADD http://download.osgeo.org/webdav/geotools/com/ibm/db2jcc_license_cu/9/db2jcc_license_cu-9.jar /db2lib/db2jcc_lisence_cu.jar
